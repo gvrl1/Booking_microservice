@@ -2,7 +2,7 @@ from app.models import Apartment
 from marshmallow import validate, fields, Schema, post_load
 
 class ApartmentSchema(Schema):
-    id = fields.Int(dump_only=True)
+    id = fields.Int(load_only=True)
     number_of_apartment = fields.Int(required=True, validate=validate.Range(min=1, max=999))
     size = fields.Int(required=True, validate=validate.Range(min=1, max=999))
     amount_rooms = fields.Int(required=True, validate=validate.Range(min=1, max=4))

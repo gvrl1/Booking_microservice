@@ -24,8 +24,12 @@ def create(validated_data):
     booking = validated_data
     user_id = request.args.get('user_id')
     apartment_id = request.args.get('apartment_id')
+    booking = booking_service.create(booking, user_id, apartment_id)
+    if not booking:
+        response.add_status_code(400).add_message('User or apartment not found!').add_data()
+        return jsonify(response.build()), response.status_code
     response.add_status_code(201).add_message('Booking created!').add_data(
-        {"booking": booking_schema.dump(booking_service.create(booking, user_id, apartment_id))}
+        {"booking": booking_schema.dump(booking)}
     )
     return jsonify(response.build()), response.status_code
     
