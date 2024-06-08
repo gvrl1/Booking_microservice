@@ -15,8 +15,8 @@ class BookingService:
     """
 
     def create(self, entity: Booking, user_id: int, apartment_id: int) -> Booking:
-        user_request = requests.get("http://services-user-1:5000/api/v1/user/findbyid/{}".format(user_id))
-        apartment_request = requests.get("http://services-apartment-1:5000/api/v1/apartment/findbyid/{}".format(apartment_id))
+        user_request = requests.get("http://user.um.localhost:5000/api/v1/user/findbyid/{}".format(user_id))
+        apartment_request = requests.get("http://apartment.um.localhost:5000/api/v1/apartment/findbyid/{}".format(apartment_id))
         user = user_schema.load(user_request.json()['data']['User'])
         apartment = apartment_schema.load(apartment_request.json()['data']['apartment'])
         entity.user_id = user.id
