@@ -4,6 +4,7 @@ from app.mapping import UserSchema, ApartmentSchema
 from app import cache
 from tenacity import retry, wait_random, stop_after_attempt
 import requests
+import os
 
 booking_repository = BookingRepository()
 user_schema = UserSchema()
@@ -35,7 +36,7 @@ class BookingService:
     def get_apartment(self, apartment_id):
         apartment = cache.get(f"apartment_{apartment_id}")
         if apartment is None:
-            apartment = requests.get("http://apartment.um.localhost:5000/api/v1/apartment/findbyid/{}".format(apartment_id))
+            apartment = requests.get(os.getenv('URL_FINDBYID_APARTMENT').format(apartment_id))
             if apartment.status_code != 200:
                 return None
             cache.set(f"apartment_{apartment_id}", apartment, timeout=50)
@@ -45,7 +46,7 @@ class BookingService:
     def get_user(self, user_id):
         user = cache.get(f"user_{user_id}")
         if user is None:
-            user = requests.get("http://user.um.localhost:5000/api/v1/user/findbyid/{}".format(user_id))
+            user = requests.get(os.getenv('URL_FINDBYID_USER').format(user_id))
             if user.status_code != 200:
                 return None
             cache.set(f"user_{user_id}", user, timeout=50)
